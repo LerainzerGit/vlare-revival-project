@@ -1,0 +1,1840 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vlare — Video Sharing</title>
+  <meta name="description" content="Vlare — a creator-first video sharing platform.">
+
+  <style>
+    :root {
+      --bg:#eef0f3;
+      --white:#fff;
+      --panel:#f8f9fa;
+      --border:#cfd3d8;
+      --border-dark:#b8bdc3;
+      --text:#30343b;
+      --muted:#727981;
+      --accent:#6352a3;
+      --accent-dark:#4f4287;
+      --link:#4f5dbe;
+      --green:#4c936f;
+      --shadow:0 1px 2px rgba(0,0,0,.08);
+    }
+
+    *{box-sizing:border-box}
+
+    html{background:var(--bg)}
+
+    body{
+      margin:0;
+      color:var(--text);
+      font:13px Arial,Helvetica,sans-serif;
+      background:var(--bg)
+    }
+
+    a{
+      color:var(--link);
+      text-decoration:none
+    }
+
+    a:hover{text-decoration:underline}
+
+    button,
+    input,
+    select,
+    textarea{font:inherit}
+
+    button{cursor:pointer}
+
+    .topbar{
+      height:54px;
+      background:#fff;
+      border-bottom:1px solid #c4c8cd;
+      box-shadow:0 1px 2px rgba(0,0,0,.08);
+      display:flex;
+      align-items:center;
+    }
+
+    .topbar-inner{
+      width:min(1180px,calc(100% - 24px));
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      gap:18px
+    }
+
+    .brand{
+      font-size:26px;
+      font-weight:700;
+      letter-spacing:-1.6px;
+      color:#4f4287;
+      line-height:1
+    }
+
+    .brand span{
+      font-size:11px;
+      letter-spacing:0;
+      color:#949aa1;
+      font-weight:400;
+      display:block;
+      margin-top:2px
+    }
+
+    .search-wrap{
+      display:flex;
+      max-width:520px;
+      flex:1;
+      margin:0 auto
+    }
+
+    .search-wrap input{
+      height:32px;
+      flex:1;
+      border:1px solid #bfc4c9;
+      border-right:0;
+      border-radius:2px 0 0 2px;
+      padding:0 10px;
+      background:#fff;
+      outline:0
+    }
+
+    .search-wrap input:focus{
+      border-color:#978ebd
+    }
+
+    .search-button{
+      width:42px;
+      border:1px solid #bfc4c9;
+      border-radius:0 2px 2px 0;
+      background:#eeeef0;
+      color:#555
+    }
+
+    .top-links{
+      display:flex;
+      align-items:center;
+      gap:9px;
+      white-space:nowrap;
+      color:#666
+    }
+
+    .small-btn{
+      border:1px solid #bfc4c9;
+      border-radius:2px;
+      background:linear-gradient(#fff,#eceef0);
+      padding:6px 10px;
+      color:#4d5157
+    }
+
+    .small-btn:hover{
+      background:#e9eaec
+    }
+
+    .small-btn.primary{
+      background:linear-gradient(#7663b4,#574994);
+      border-color:#4e4287;
+      color:#fff
+    }
+
+    .page{
+      width:min(1180px,calc(100% - 24px));
+      margin:16px auto 42px
+    }
+
+    .navstrip{
+      background:#fff;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      padding:0 10px;
+      height:40px;
+      display:flex;
+      align-items:stretch;
+      margin-bottom:14px
+    }
+
+    .navstrip button{
+      border:0;
+      border-right:1px solid #e3e5e7;
+      background:transparent;
+      color:#5e646b;
+      padding:0 15px
+    }
+
+    .navstrip button:first-child{
+      font-weight:700
+    }
+
+    .navstrip button:hover,
+    .navstrip button.active{
+      background:#f0f1f3;
+      color:#4f4287
+    }
+
+    .announcement{
+      background:#f6f1ff;
+      border:1px solid #c8bde3;
+      padding:9px 12px;
+      margin-bottom:14px;
+      color:#554a73
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 270px;
+      gap:16px
+    }
+
+    .box{
+      background:#fff;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      margin-bottom:14px
+    }
+
+    .box-head{
+      min-height:37px;
+      padding:9px 12px;
+      border-bottom:1px solid #d9dce0;
+      background:linear-gradient(#fafafa,#f0f1f3);
+      font-weight:700;
+      color:#4d5258
+    }
+
+    .box-body{padding:12px}
+
+    .hero{
+      padding:18px 20px;
+      background:linear-gradient(90deg,#fff,#f7f6fb);
+      border-left:4px solid #6b59a9
+    }
+
+    .hero h1{
+      margin:0 0 6px;
+      font-size:25px;
+      font-weight:400;
+      color:#393d43
+    }
+
+    .hero p{
+      margin:0;
+      color:#70757b;
+      line-height:1.45
+    }
+
+    .hero .hero-actions{
+      margin-top:13px;
+      display:flex;
+      gap:7px
+    }
+
+    .section-title{
+      font-size:17px;
+      font-weight:400;
+      margin:0;
+      color:#42464c
+    }
+
+    .video-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:15px;
+      padding:14px
+    }
+
+    .video-card{min-width:0}
+
+    .thumb-wrap{
+      position:relative;
+      background:#ddd;
+      border:1px solid #c9cdd1;
+      aspect-ratio:16/9;
+      overflow:hidden
+    }
+
+    .thumb-wrap img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover
+    }
+
+    .duration{
+      position:absolute;
+      right:4px;
+      bottom:4px;
+      background:rgba(0,0,0,.78);
+      color:#fff;
+      padding:2px 4px;
+      font-size:11px
+    }
+
+    .video-title{
+      display:block;
+      margin-top:7px;
+      color:#4c5ab3;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis
+    }
+
+    .video-title:hover{text-decoration:underline}
+
+    .video-meta{
+      font-size:11px;
+      color:#7a8087;
+      line-height:1.45;
+      margin-top:4px
+    }
+
+    .video-actions{
+      margin-top:5px;
+      display:flex;
+      gap:4px
+    }
+
+    .mini-btn{
+      font-size:11px;
+      padding:3px 7px;
+      border:1px solid #c5c9ce;
+      background:#f4f5f6;
+      color:#555b62;
+      border-radius:2px
+    }
+
+    .mini-btn:hover{
+      background:#e9eaec
+    }
+
+    .sidebar-list{
+      list-style:none;
+      margin:0;
+      padding:0
+    }
+
+    .sidebar-list li{
+      border-bottom:1px solid #eceeef;
+      padding:9px 0
+    }
+
+    .sidebar-list li:last-child{
+      border-bottom:0
+    }
+
+    .sidebar-list a{
+      font-weight:700;
+      color:#5a64ae
+    }
+
+    .sidebar-list .sub{
+      display:block;
+      color:#858b92;
+      font-size:11px;
+      margin-top:2px
+    }
+
+    .account-box{
+      font-size:12px;
+      color:#666;
+      line-height:1.55
+    }
+
+    .account-box strong{color:#474c52}
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px
+    }
+
+    .stat{
+      border:1px solid #d5d9dd;
+      background:#fafafa;
+      padding:10px
+    }
+
+    .stat span{
+      display:block;
+      color:#7b8188;
+      font-size:11px
+    }
+
+    .stat b{
+      display:block;
+      font-size:19px;
+      font-weight:400;
+      color:#444a50;
+      margin-top:3px
+    }
+
+    .form-grid{
+      display:grid;
+      gap:10px
+    }
+
+    label{
+      display:grid;
+      gap:4px;
+      color:#555b61
+    }
+
+    input,
+    select,
+    textarea{
+      border:1px solid #c2c6cb;
+      border-radius:2px;
+      background:#fff;
+      color:#333;
+      padding:7px 8px;
+      outline:none
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+      border-color:#8b7fb2;
+      box-shadow:0 0 0 1px #ddd8eb
+    }
+
+    .form-actions{
+      display:flex;
+      gap:7px;
+      align-items:center
+    }
+
+    .primary{
+      border:1px solid #4c4282;
+      background:linear-gradient(#7663b5,#574994);
+      color:#fff;
+      border-radius:2px;
+      padding:7px 11px
+    }
+
+    .primary:hover{
+      background:linear-gradient(#6e5cac,#514487)
+    }
+
+    .secondary{
+      border:1px solid #bfc4c9;
+      background:linear-gradient(#fff,#e9ebed);
+      color:#4c5157;
+      border-radius:2px;
+      padding:7px 11px
+    }
+
+    dialog{
+      width:min(720px,calc(100% - 24px));
+      border:1px solid #aaaeb3;
+      border-radius:3px;
+      padding:0;
+      background:#fff;
+      color:#333;
+      box-shadow:0 8px 35px rgba(0,0,0,.3)
+    }
+
+    dialog::backdrop{
+      background:rgba(0,0,0,.45)
+    }
+
+    .dialog-head{
+      padding:10px 12px;
+      border-bottom:1px solid #d4d7da;
+      background:linear-gradient(#fafafa,#eceef0);
+      display:flex;
+      justify-content:space-between;
+      align-items:center
+    }
+
+    .dialog-head h2{
+      margin:0;
+      font-size:16px;
+      font-weight:700
+    }
+
+    .dialog-body{padding:13px}
+
+    video{
+      display:block;
+      width:100%;
+      max-height:68vh;
+      background:#111
+    }
+
+    .notice{
+      border:1px solid #d6cbee;
+      background:#f7f3ff;
+      padding:8px 10px;
+      color:#625680;
+      margin-bottom:10px
+    }
+
+    .muted{color:#7d8389}
+
+    .empty{
+      padding:26px;
+      text-align:center;
+      color:#888
+    }
+
+    .error{
+      padding:15px;
+      color:#803b3b;
+      background:#fff4f4;
+      border:1px solid #e2bdbd
+    }
+
+    .footer{
+      color:#858b91;
+      font-size:11px;
+      text-align:center;
+      padding:15px 0 0
+    }
+
+    .hidden{display:none!important}
+
+    @media (max-width:980px){
+      .layout{grid-template-columns:1fr}
+
+      .sidebar{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:14px
+      }
+
+      .sidebar .box{margin-bottom:0}
+
+      .video-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr))
+      }
+    }
+
+    @media (max-width:680px){
+      .topbar{
+        height:auto;
+        padding:9px 0
+      }
+
+      .topbar-inner{
+        flex-wrap:wrap;
+        gap:9px
+      }
+
+      .search-wrap{
+        order:3;
+        flex-basis:100%;
+        max-width:none
+      }
+
+      .top-links{
+        margin-left:auto
+      }
+
+      .navstrip{overflow:auto}
+
+      .video-grid{grid-template-columns:1fr}
+
+      .sidebar{display:block}
+
+      .stats{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+
+    <div class="brand">
+      vlare
+      <span>ignite your creativity</span>
+    </div>
+
+    <div class="search-wrap">
+      <input id="search" placeholder="Search Vlare">
+      <button class="search-button" id="searchBtn">⌕</button>
+    </div>
+
+    <div class="top-links">
+      <button class="small-btn" id="loginBtn">Log In</button>
+      <button class="small-btn primary hidden" id="accountBtn"></button>
+      <a href="#" id="uploadTop">Upload</a>
+    </div>
+
+  </div>
+</header>
+
+<div class="page">
+
+  <nav class="navstrip">
+    <button class="active" data-tab="home">Home</button>
+    <button data-tab="latest">Latest Videos</button>
+    <button data-tab="gaming">Gaming</button>
+    <button data-tab="music">Music</button>
+    <button data-tab="browse">Browse</button>
+    <button data-tab="dashboard">My Channel</button>
+  </nav>
+
+  <div class="announcement">
+    <strong>Welcome back to Vlare.</strong>
+    A simpler video site for creators and viewers. Fewer interruptions, more control.
+  </div>
+
+  <div class="layout">
+
+    <main>
+
+      <section id="homeTab" class="box">
+
+        <div class="hero">
+          <h1>Video sharing, the way it used to feel.</h1>
+
+          <p>
+            Discover independent creators, upload your own videos,
+            and browse without a wall of recommendations competing
+            for your attention.
+          </p>
+
+          <div class="hero-actions">
+            <button class="primary" data-tab="latest">
+              Browse latest videos
+            </button>
+
+            <button class="secondary" id="heroUpload">
+              Upload a video
+            </button>
+          </div>
+        </div>
+
+        <div class="box-head">
+          <span class="section-title">Featured Videos</span>
+        </div>
+
+        <div id="videos" class="video-grid"></div>
+
+      </section>
+
+      <section id="dashboardTab" class="box hidden">
+
+        <div class="box-head">
+          My Channel
+        </div>
+
+        <div class="box-body">
+
+          <div id="stats" class="stats"></div>
+
+          <div style="height:12px"></div>
+
+          <div class="form-actions">
+            <button class="primary" id="uploadBtn">
+              Upload Video
+            </button>
+
+            <span class="muted">
+              Your creator statistics are stored locally in this demo.
+            </span>
+          </div>
+
+          <div style="height:10px"></div>
+
+          <div id="creatorVideos"></div>
+
+        </div>
+
+      </section>
+
+      <div id="statusBox" class="hidden"></div>
+
+    </main>
+
+    <aside class="sidebar">
+
+      <section class="box">
+
+        <div class="box-head">
+          Popular Categories
+        </div>
+
+        <div class="box-body">
+
+          <ul class="sidebar-list">
+
+            <li>
+              <a href="#" data-category="Gaming">Gaming</a>
+              <span class="sub">
+                Gameplays, commentary &amp; devlogs
+              </span>
+            </li>
+
+            <li>
+              <a href="#" data-category="Music">Music</a>
+              <span class="sub">
+                Originals, covers &amp; performances
+              </span>
+            </li>
+
+            <li>
+              <a href="#" data-category="Tech">Technology</a>
+              <span class="sub">
+                Reviews, tutorials &amp; projects
+              </span>
+            </li>
+
+            <li>
+              <a href="#" data-category="News">News</a>
+              <span class="sub">
+                Community &amp; platform updates
+              </span>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </section>
+
+      <section class="box" id="accountSide">
+
+        <div class="box-head">
+          My Account
+        </div>
+
+        <div class="box-body account-box" id="accountSideBody">
+          You are currently browsing as a guest.
+          <br><br>
+
+          <button class="primary" id="sideLogin">
+            Log In
+          </button>
+        </div>
+
+      </section>
+
+      <section class="box">
+
+        <div class="box-head">
+          About Vlare
+        </div>
+
+        <div class="box-body account-box">
+
+          Vlare is an independent video sharing experience
+          inspired by the platform's 2019–2020 era.
+
+          <br><br>
+
+          <a href="#">Community Guidelines</a>
+          <br>
+
+          <a href="#">Terms of Service</a>
+          <br>
+
+          <a href="#">Privacy</a>
+
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+  <div class="footer">
+    Vlare revival prototype · Static GitHub Pages build ·
+    backend.json provides the seed data
+  </div>
+
+</div>
+
+<dialog id="loginDialog">
+
+  <div class="dialog-head">
+
+    <h2>Log In</h2>
+
+    <button
+      class="secondary"
+      onclick="loginDialog.close()"
+    >
+      Close
+    </button>
+
+  </div>
+
+  <div class="dialog-body">
+
+    <div class="notice">
+      Demo account:
+      <strong>alex</strong> /
+      <strong>demo123</strong>
+    </div>
+
+    <form id="loginForm" class="form-grid">
+
+      <label>
+        Username
+        <input
+          id="username"
+          required
+          autocomplete="username"
+        >
+      </label>
+
+      <label>
+        Password
+        <input
+          id="password"
+          type="password"
+          required
+          autocomplete="current-password"
+        >
+      </label>
+
+      <div class="form-actions">
+
+        <button class="primary">
+          Log In
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          id="showSignup"
+        >
+          Create Account
+        </button>
+
+      </div>
+
+    </form>
+
+    <form
+      id="signupForm"
+      class="form-grid hidden"
+      style="margin-top:12px"
+    >
+
+      <label>
+        Display name
+        <input id="signupDisplay" required>
+      </label>
+
+      <label>
+        Username
+        <input id="signupUsername" required>
+      </label>
+
+      <label>
+        Password
+        <input
+          id="signupPassword"
+          type="password"
+          minlength="6"
+          required
+        >
+      </label>
+
+      <div class="form-actions">
+
+        <button class="primary">
+          Create Account
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          id="cancelSignup"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</dialog>
+
+<dialog id="watchDialog">
+
+  <div class="dialog-head">
+
+    <h2 id="watchTitle">Video</h2>
+
+    <button
+      class="secondary"
+      onclick="watchDialog.close()"
+    >
+      Close
+    </button>
+
+  </div>
+
+  <div class="dialog-body">
+
+    <video
+      id="player"
+      controls
+      playsinline
+    ></video>
+
+    <p id="watchDescription"></p>
+
+    <div id="watchMeta" class="muted"></div>
+
+  </div>
+
+</dialog>
+
+<dialog id="uploadDialog">
+
+  <div class="dialog-head">
+
+    <h2>Upload Video</h2>
+
+    <button
+      class="secondary"
+      onclick="uploadDialog.close()"
+    >
+      Close
+    </button>
+
+  </div>
+
+  <div class="dialog-body">
+
+    <form id="uploadForm" class="form-grid">
+
+      <label>
+        Title
+        <input id="videoTitle" required maxlength="100">
+      </label>
+
+      <label>
+        Description
+        <textarea
+          id="videoDescription"
+          rows="4"
+          maxlength="1000"
+        ></textarea>
+      </label>
+
+      <label>
+        Category
+
+        <select id="videoCategory">
+          <option>Gaming</option>
+          <option>Music</option>
+          <option>Tech</option>
+          <option>News</option>
+          <option>Other</option>
+        </select>
+
+      </label>
+
+      <label>
+        Video URL
+
+        <input
+          id="videoUrl"
+          type="url"
+          placeholder="https://example.com/video.mp4"
+          required
+        >
+      </label>
+
+      <label>
+        Thumbnail URL
+
+        <input
+          id="thumbnailUrl"
+          type="url"
+          placeholder="https://example.com/thumb.jpg"
+        >
+      </label>
+
+      <div class="form-actions">
+
+        <button class="primary">
+          Publish
+        </button>
+
+        <button
+          type="button"
+          class="secondary"
+          onclick="uploadDialog.close()"
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</dialog>
+
+<script>
+
+const STORAGE_KEY = 'vlare-db-v1';
+const USER_KEY = 'vlare-user-v1';
+
+const state = {
+  db: null,
+  tab: 'home',
+  user: JSON.parse(
+    localStorage.getItem(USER_KEY) || 'null'
+  )
+};
+
+const $ = id => document.getElementById(id);
+
+async function loadDb() {
+
+  try {
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+
+      state.db = JSON.parse(saved);
+
+    } else {
+
+      const res = await fetch(
+        'backend.json',
+        { cache: 'no-store' }
+      );
+
+      if (!res.ok)
+        throw new Error(
+          'backend.json could not be loaded'
+        );
+
+      state.db = await res.json();
+
+    }
+
+    render();
+
+  } catch (err) {
+
+    $('videos').innerHTML =
+      '<div class="error">' +
+      'Vlare could not load backend.json. ' +
+      'Make sure backend.json is in the same GitHub Pages directory as index.html.' +
+      '</div>';
+
+  }
+
+}
+
+function saveDb() {
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(state.db)
+  );
+
+}
+
+function creatorName(id) {
+
+  return state.db.accounts.find(
+    a => a.id === id
+  )?.displayName || 'Unknown user';
+
+}
+
+function formatNumber(n) {
+
+  return new Intl.NumberFormat().format(n || 0);
+
+}
+
+function formatDate(s) {
+
+  const d = new Date(s);
+
+  return isNaN(d)
+    ? ''
+    : d.toLocaleDateString(
+        undefined,
+        {
+          year:'numeric',
+          month:'short',
+          day:'numeric'
+        }
+      );
+
+}
+
+function esc(v) {
+
+  return String(v ?? '').replace(
+    /[&<>'"]/g,
+    c => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      "'":'&#39;',
+      '"':'&quot;'
+    }[c])
+  );
+
+}
+
+function duration(sec) {
+
+  sec = Number(sec) || 0;
+
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+
+  return (
+    m +
+    ':' +
+    String(s).padStart(2,'0')
+  );
+
+}
+
+function filteredVideos() {
+
+  const q =
+    $('search').value.trim().toLowerCase();
+
+  let videos = [...state.db.videos];
+
+  if (state.tab === 'latest') {
+
+    videos.sort(
+      (a,b) =>
+        new Date(b.publishedAt) -
+        new Date(a.publishedAt)
+    );
+
+  }
+
+  if (
+    ['gaming','music'].includes(
+      state.tab
+    )
+  ) {
+
+    videos =
+      videos.filter(
+        v =>
+          v.category.toLowerCase() ===
+          state.tab
+      );
+
+  }
+
+  if (state.tab === 'browse') {
+
+    videos.sort(
+      (a,b) =>
+        (b.views || 0) -
+        (a.views || 0)
+    );
+
+  }
+
+  if (q) {
+
+    videos =
+      videos.filter(
+        v =>
+          (
+            `${v.title} ${v.description} ${v.category} ${creatorName(v.uploaderId)}`
+          )
+          .toLowerCase()
+          .includes(q)
+      );
+
+  }
+
+  return videos;
+
+}
+
+function render() {
+
+  if (!state.db)
+    return;
+
+  renderVideos(
+    filteredVideos()
+  );
+
+  renderAuth();
+  renderDashboard();
+
+  document
+    .querySelectorAll('[data-tab]')
+    .forEach(
+      b =>
+        b.classList.toggle(
+          'active',
+          b.dataset.tab === state.tab
+        )
+    );
+
+}
+
+function renderVideos(videos) {
+
+  $('videos').innerHTML =
+    videos.length
+
+      ? videos.map(
+          v => `
+            <article class="video-card">
+
+              <div class="thumb-wrap">
+
+                <img
+                  src="${esc(v.thumbnail)}"
+                  alt=""
+                >
+
+                <span class="duration">
+                  ${duration(v.duration)}
+                </span>
+
+              </div>
+
+              <a
+                href="#"
+                class="video-title"
+                onclick="watchVideo('${esc(v.id)}');return false"
+              >
+                ${esc(v.title)}
+              </a>
+
+              <div class="video-meta">
+                ${esc(creatorName(v.uploaderId))}
+                <br>
+                ${formatNumber(v.views)} views ·
+                ${formatDate(v.publishedAt)} ·
+                ${esc(v.category)}
+              </div>
+
+              <div class="video-actions">
+
+                <button
+                  class="mini-btn"
+                  onclick="watchVideo('${esc(v.id)}')"
+                >
+                  Watch
+                </button>
+
+                <button
+                  class="mini-btn"
+                  onclick="likeVideo('${esc(v.id)}')"
+                >
+                  ♥ ${formatNumber(v.likes)}
+                </button>
+
+              </div>
+
+            </article>
+          `
+        ).join('')
+
+      : '<div class="empty">No videos matched your search.</div>';
+
+}
+
+function renderAuth() {
+
+  if (state.user) {
+
+    $('loginBtn')
+      .classList.add('hidden');
+
+    $('accountBtn')
+      .classList.remove('hidden');
+
+    $('accountBtn').textContent =
+      state.user.displayName +
+      ' · Log Out';
+
+    $('accountSideBody').innerHTML =
+      `<strong>${esc(state.user.displayName)}</strong>` +
+      `<br>@${esc(state.user.username)}` +
+      `<br><br>` +
+      `<button class="secondary" id="sideLogout">Log Out</button>`;
+
+    $('sideLogout').onclick = logout;
+
+  } else {
+
+    $('loginBtn')
+      .classList.remove('hidden');
+
+    $('accountBtn')
+      .classList.add('hidden');
+
+    $('accountSideBody').innerHTML =
+      'You are currently browsing as a guest.' +
+      '<br><br>' +
+      '<button class="primary" id="sideLogin">Log In</button>';
+
+    $('sideLogin').onclick =
+      () => loginDialog.showModal();
+
+  }
+
+}
+
+function renderDashboard() {
+
+  $('dashboardTab')
+    .classList.toggle(
+      'hidden',
+      state.tab !== 'dashboard'
+    );
+
+  $('homeTab')
+    .classList.toggle(
+      'hidden',
+      state.tab === 'dashboard'
+    );
+
+  if (!state.user) {
+
+    $('stats').innerHTML =
+      '<div class="empty" style="grid-column:1/-1">' +
+      'Log in to view your channel statistics.' +
+      '</div>';
+
+    $('creatorVideos').innerHTML = '';
+
+    return;
+
+  }
+
+  const mine =
+    state.db.videos.filter(
+      v =>
+        v.uploaderId ===
+        state.user.id
+    );
+
+  const views =
+    mine.reduce(
+      (n,v) =>
+        n + v.views,
+      0
+    );
+
+  const likes =
+    mine.reduce(
+      (n,v) =>
+        n + v.likes,
+      0
+    );
+
+  const revenue =
+    mine.reduce(
+      (n,v) =>
+        n +
+        (v.monetization?.revenue || 0),
+      0
+    );
+
+  $('stats').innerHTML = `
+
+    <div class="stat">
+      <span>Videos</span>
+      <b>${mine.length}</b>
+    </div>
+
+    <div class="stat">
+      <span>Views</span>
+      <b>${formatNumber(views)}</b>
+    </div>
+
+    <div class="stat">
+      <span>Likes</span>
+      <b>${formatNumber(likes)}</b>
+    </div>
+
+    <div class="stat">
+      <span>Revenue</span>
+      <b>$${revenue.toFixed(2)}</b>
+    </div>
+
+  `;
+
+  $('creatorVideos').innerHTML =
+    mine.length
+
+      ? mine.map(
+          v => `
+
+            <div
+              style="
+                border:1px solid #d9dce0;
+                padding:10px;
+                margin-top:7px;
+                background:#fafafa
+              "
+            >
+
+              <strong>
+                ${esc(v.title)}
+              </strong>
+
+              <div class="muted">
+                ${formatNumber(v.views)}
+                views ·
+                $${(v.monetization?.revenue || 0).toFixed(2)}
+                revenue
+              </div>
+
+            </div>
+
+          `
+        ).join('')
+
+      : '<div class="empty">You have not uploaded any videos yet.</div>';
+
+}
+
+function watchVideo(id) {
+
+  const v =
+    state.db.videos.find(
+      x => x.id === id
+    );
+
+  if (!v)
+    return;
+
+  $('watchTitle').textContent =
+    v.title;
+
+  $('watchDescription').textContent =
+    v.description;
+
+  $('watchMeta').textContent =
+    `${formatNumber(v.views)} views · ` +
+    `${creatorName(v.uploaderId)} · ` +
+    `${v.category} · ` +
+    `${formatDate(v.publishedAt)}`;
+
+  $('player').src =
+    v.videoUrl;
+
+  watchDialog.showModal();
+
+  v.views =
+    (v.views || 0) + 1;
+
+  state.db.views.push({
+
+    id:
+      'view_' +
+      String(
+        state.db.views.length + 1
+      ).padStart(3,'0'),
+
+    videoId:id,
+
+    viewerId:
+      state.user?.id || null,
+
+    watchedAt:
+      new Date().toISOString(),
+
+    watchSeconds:0
+
+  });
+
+  if (v.monetization?.enabled) {
+
+    v.monetization.revenue =
+      (v.monetization.revenue || 0) +
+      (v.monetization.cpm || 0) /
+      1000;
+
+  }
+
+  saveDb();
+  render();
+
+}
+
+function likeVideo(id) {
+
+  const v =
+    state.db.videos.find(
+      x => x.id === id
+    );
+
+  if (!v)
+    return;
+
+  v.likes =
+    (v.likes || 0) + 1;
+
+  saveDb();
+  render();
+
+}
+
+function logout() {
+
+  state.user = null;
+
+  localStorage.removeItem(
+    USER_KEY
+  );
+
+  state.tab = 'home';
+
+  render();
+
+}
+
+function openUpload() {
+
+  if (!state.user) {
+
+    loginDialog.showModal();
+    return;
+
+  }
+
+  uploadDialog.showModal();
+
+}
+
+function setTab(tab) {
+
+  state.tab = tab;
+  render();
+
+}
+
+document
+  .querySelectorAll(
+    'button[data-tab]'
+  )
+  .forEach(
+    b =>
+      b.addEventListener(
+        'click',
+        () =>
+          setTab(
+            b.dataset.tab
+          )
+      )
+  );
+
+$('loginBtn').onclick =
+  () => loginDialog.showModal();
+
+$('accountBtn').onclick =
+  () => logout();
+
+$('sideLogin').onclick =
+  () => loginDialog.showModal();
+
+$('uploadTop').onclick =
+  e => {
+
+    e.preventDefault();
+    openUpload();
+
+  };
+
+$('heroUpload').onclick =
+  openUpload;
+
+$('uploadBtn').onclick =
+  openUpload;
+
+$('search').addEventListener(
+  'input',
+  render
+);
+
+$('searchBtn').onclick =
+  render;
+
+$('showSignup').onclick =
+  () =>
+    $('signupForm')
+      .classList
+      .remove('hidden');
+
+$('cancelSignup').onclick =
+  () =>
+    $('signupForm')
+      .classList
+      .add('hidden');
+
+document
+  .querySelectorAll(
+    '[data-category]'
+  )
+  .forEach(
+    a =>
+      a.addEventListener(
+        'click',
+        e => {
+
+          e.preventDefault();
+
+          $('search').value =
+            a.dataset.category;
+
+          state.tab = 'home';
+
+          render();
+
+        }
+      )
+  );
+
+function autoSeedIfNeeded() {
+  loadDb();
+}
+
+autoSeedIfNeeded();
+
+$('loginForm').onsubmit =
+  e => {
+
+    e.preventDefault();
+
+    const u =
+      $('username')
+        .value
+        .trim()
+        .toLowerCase();
+
+    const p =
+      $('password').value;
+
+    const a =
+      state.db.accounts.find(
+        x =>
+          x.username === u &&
+          x.password === p
+      );
+
+    if (!a) {
+
+      alert(
+        'Invalid username or password.'
+      );
+
+      return;
+
+    }
+
+    state.user = {
+      id:a.id,
+      username:a.username,
+      displayName:a.displayName
+    };
+
+    localStorage.setItem(
+      USER_KEY,
+      JSON.stringify(
+        state.user
+      )
+    );
+
+    loginDialog.close();
+
+    e.target.reset();
+
+    render();
+
+  };
+
+$('signupForm').onsubmit =
+  e => {
+
+    e.preventDefault();
+
+    const username =
+      $('signupUsername')
+        .value
+        .trim()
+        .toLowerCase();
+
+    const displayName =
+      $('signupDisplay')
+        .value
+        .trim();
+
+    const password =
+      $('signupPassword').value;
+
+    if (
+      state.db.accounts.some(
+        a =>
+          a.username ===
+          username
+      )
+    ) {
+
+      alert(
+        'That username is already taken.'
+      );
+
+      return;
+
+    }
+
+    const a = {
+
+      id:
+        'u_' +
+        String(
+          state.db.accounts.length + 1
+        ).padStart(3,'0'),
+
+      username,
+
+      displayName,
+
+      password,
+
+      role:'user',
+
+      balance:0,
+
+      joined:
+        new Date()
+          .toISOString()
+          .slice(0,10)
+
+    };
+
+    state.db.accounts.push(a);
+
+    state.user = {
+
+      id:a.id,
+      username:a.username,
+      displayName:a.displayName
+
+    };
+
+    localStorage.setItem(
+      USER_KEY,
+      JSON.stringify(
+        state.user
+      )
+    );
+
+    saveDb();
+
+    loginDialog.close();
+
+    e.target.reset();
+
+    e.target.classList.add(
+      'hidden'
+    );
+
+    render();
+
+  };
+
+$('uploadForm').onsubmit =
+  e => {
+
+    e.preventDefault();
+
+    if (!state.user)
+      return;
+
+    const v = {
+
+      id:
+        'v_' +
+        String(
+          state.db.videos.length + 1
+        ).padStart(3,'0'),
+
+      title:
+        $('videoTitle')
+          .value
+          .trim(),
+
+      description:
+        $('videoDescription')
+          .value
+          .trim(),
+
+      uploaderId:
+        state.user.id,
+
+      category:
+        $('videoCategory').value,
+
+      duration:0,
+
+      views:0,
+
+      likes:0,
+
+      publishedAt:
+        new Date().toISOString(),
+
+      thumbnail:
+        $('thumbnailUrl').value.trim()
+        ||
+        'https://picsum.photos/seed/vlare-' +
+        Date.now() +
+        '/640/360',
+
+      videoUrl:
+        $('videoUrl')
+          .value
+          .trim(),
+
+      monetization: {
+
+        enabled:true,
+
+        cpm:1.5,
+
+        revenue:0
+
+      }
+
+    };
+
+    state.db.videos.unshift(v);
+
+    saveDb();
+
+    uploadDialog.close();
+
+    e.target.reset();
+
+    state.tab =
+      'dashboard';
+
+    render();
+
+  };
+
+</script>
+
+</body>
+</html>
