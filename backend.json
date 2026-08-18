@@ -1,0 +1,104 @@
+{
+  "site": {
+    "name": "Vlare",
+    "tagline": "Your video platform, without the clutter.",
+    "adPolicy": "light"
+  },
+  "accounts": [
+    {
+      "id": "u_001",
+      "username": "alex",
+      "displayName": "Alex",
+      "password": "demo123",
+      "role": "user",
+      "balance": 12.45,
+      "joined": "2026-08-01"
+    },
+    {
+      "id": "u_002",
+      "username": "vlare",
+      "displayName": "Vlare Official",
+      "password": "demo123",
+      "role": "creator",
+      "balance": 248.1,
+      "joined": "2026-07-28"
+    }
+  ],
+  "videos": [
+    {
+      "id": "v_001",
+      "title": "Welcome back to Vlare",
+      "description": "A quick tour of the revived Vlare experience.",
+      "uploaderId": "u_002",
+      "category": "News",
+      "duration": 72,
+      "views": 18420,
+      "likes": 812,
+      "publishedAt": "2026-08-15T14:00:00Z",
+      "thumbnail": "https://picsum.photos/seed/vlare-welcome/640/360",
+      "videoUrl": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+      "monetization": {
+        "enabled": true,
+        "cpm": 1.5,
+        "revenue": 27.63
+      }
+    },
+    {
+      "id": "v_002",
+      "title": "Building a tiny game engine",
+      "description": "A devlog about rendering, input, and a very small game loop.",
+      "uploaderId": "u_001",
+      "category": "Gaming",
+      "duration": 318,
+      "views": 9321,
+      "likes": 441,
+      "publishedAt": "2026-08-12T18:30:00Z",
+      "thumbnail": "https://picsum.photos/seed/vlare-game/640/360",
+      "videoUrl": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+      "monetization": {
+        "enabled": true,
+        "cpm": 2.2,
+        "revenue": 20.5
+      }
+    },
+    {
+      "id": "v_003",
+      "title": "Late night music session",
+      "description": "A relaxed jam session recorded in one take.",
+      "uploaderId": "u_002",
+      "category": "Music",
+      "duration": 241,
+      "views": 5217,
+      "likes": 377,
+      "publishedAt": "2026-08-10T21:00:00Z",
+      "thumbnail": "https://picsum.photos/seed/vlare-music/640/360",
+      "videoUrl": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+      "monetization": {
+        "enabled": false,
+        "cpm": 0,
+        "revenue": 0
+      }
+    }
+  ],
+  "views": [
+    {
+      "id": "view_001",
+      "videoId": "v_001",
+      "viewerId": "u_001",
+      "watchedAt": "2026-08-17T19:20:00Z",
+      "watchSeconds": 51
+    },
+    {
+      "id": "view_002",
+      "videoId": "v_002",
+      "viewerId": null,
+      "watchedAt": "2026-08-17T20:15:00Z",
+      "watchSeconds": 133
+    }
+  ],
+  "monetization": {
+    "platformSharePercent": 15,
+    "creatorSharePercent": 85,
+    "currency": "USD"
+  }
+}
